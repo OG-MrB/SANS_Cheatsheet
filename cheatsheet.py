@@ -1,5 +1,7 @@
 import os
 import time
+import subprocess
+
 
 if os.name == 'nt':
     os.system('cls')
@@ -38,6 +40,24 @@ if os.name == 'nt':
     
 elif os.name == 'posix':
     os.system('clear')
+    print('[+]Linux System Detected.')
+    print('[+]Checking for Unusual Processes and Services.')
+    time.sleep(3)
+    # This loop is for pulling out root activities after running ps -aux
+    file_handle_write = open('ps_aux', 'w')
+    subprocess.call(['ps', '-aux'], stdout = file_handle_write)
+    file_handle_write.close()
+    # Open file to be read and parsed
+    # so we can find the root user 
+    # processes
+    file_handle_read = open('ps_aux', 'r')
+    contents = file_handle_read.readlines()
+    
+    for row in range(len(contents)):
+        if 'root' in contents[row]:
+            print(contents[row])
+
+
 elif os.name == 'os2':
     os.system('clear')
 
